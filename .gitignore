@@ -1,0 +1,18 @@
+# Visual Studio Artifacts
+**/*.vcxproj.user
+.vs/**
+
+# Build Artifacts
+Debug/**
+Release/**
+x64/**
+
+preloader/x64/**
+preloader/Debug/**
+preloader/Release/**
+
+# Automatically generated proxy artifacts
+preloader/Proxy/gen/*.cpp
+preloader/Proxy/gen/*.h
+preloader/Proxy/gen/*.asm
+preloader/Proxy/gen/*.rc
