@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Entrypoint">
+      <UniqueIdentifier>{f1c9e3b4-2dc7-4632-b45b-a66956399052}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Preloader Core">
+      <UniqueIdentifier>{c9fc51e1-21e4-4540-ac7c-d3fac2506be2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Proxy">
+      <UniqueIdentifier>{b9eca8cd-5920-4386-a01d-74e0336d3a94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PascalUtil">
+      <UniqueIdentifier>{e9efda25-a0d2-4fb6-adf4-f2de5dfbc168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Proxy\Generated Files">
+      <UniqueIdentifier>{f4e762e4-bc5a-4afb-8651-271cff95b316}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Core\Core.cpp">
+      <Filter>Preloader Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PascalUtil\pascal_util.cpp">
+      <Filter>PascalUtil</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Entrypoint</Filter>
+    </ClCompile>
+    <ClCompile Include="Proxy\proxy.cpp">
+      <Filter>Proxy</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Core\Core.h">
+      <Filter>Preloader Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PascalUtil\pascal_util.h">
+      <Filter>PascalUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="Proxy\proxy.h">
+      <Filter>Proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="Proxy\gen\header.h">
+      <Filter>Proxy\Generated Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Proxy\gen\exports_x64.def">
+      <Filter>Proxy\Generated Files</Filter>
+    </None>
+    <None Include="Proxy\gen\exports_x86.def">
+      <Filter>Proxy\Generated Files</Filter>
+    </None>
+    <None Include="Proxy\gen\generated.asm">
+      <Filter>Proxy\Generated Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Proxy\gen\generated.rc">
+      <Filter>Proxy\Generated Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
