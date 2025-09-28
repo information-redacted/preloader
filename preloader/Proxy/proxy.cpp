@@ -3,13 +3,7 @@
 
 static HMODULE hmod = NULL;
 static LPCSTR export_names[] = {
-    COMMON_EXPORT_NAMES
-#if defined(_X86_) && defined(X86_EXPORT_NAMES)
-    , X86_EXPORT_NAMES
-#endif
-#if defined(_WIN64) && defined(X64_EXPORT_NAMES)
-    , X64_EXPORT_NAMES
-#endif
+    EXPORT_NAMES
 };
 static FARPROC export_procs[_countof(export_names)] = { 0 };
 

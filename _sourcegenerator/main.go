@@ -117,7 +117,8 @@ func main() {
 	sExports64 = strings.TrimSpace(sExports64)
 	sCommonExports = strings.TrimSpace(sCommonExports)
 
-	err = os.WriteFile(fmt.Sprintf("generated_%s/generated.asm", dllBaseName), []byte(fmt.Sprintf(AsmTemplate, sExports32, sExports64, sCommonExports)), 777)
+	err = os.WriteFile(fmt.Sprintf("generated_%s/generated.asm", dllBaseName),
+		[]byte(fmt.Sprintf(AsmTemplate, sExports32, sExports64, sCommonExports)), 777)
 	if err != nil {
 		log.Fatalf("could not write assembly file: %v", err)
 	}
@@ -135,23 +136,14 @@ func main() {
 		log.Fatalf("could not write x86-64 export definitions file: %v", err)
 	}
 
-	sExportsHeaderCommon := ""
-	for _, e := range commonExports {
-		h := ""
-		if e.NoName {
-			h = fmt.Sprintf(HeaderExportNoNameTemplate, e.Ordinal)
-		} else {
-			h = fmt.Sprintf("\"%s\"", e.Name)
-		}
+	allExports32 := append(commonExports, exports32...)
+	allExports64 := append(commonExports, exports64...)
 
-		if sExportsHeaderCommon != "" {
-			sExportsHeaderCommon += ", "
-		}
-		sExportsHeaderCommon += fmt.Sprintf("%s", h)
-	}
+	slices.SortFunc(allExports32, SortSliceCmp)
+	slices.SortFunc(allExports64, SortSliceCmp)
 
 	sExportsHeader32 := ""
-	for _, e := range exports32 {
+	for _, e := range allExports32 {
 		h := ""
 		if e.NoName {
 			h = fmt.Sprintf(HeaderExportNoNameTemplate, e.Ordinal)
@@ -161,11 +153,11 @@ func main() {
 		if sExportsHeader32 != "" {
 			sExportsHeader32 += ", "
 		}
-		sExportsHeader32 += fmt.Sprintf("%s", h)
+		sExportsHeader32 += h
 	}
 
 	sExportsHeader64 := ""
-	for _, e := range exports64 {
+	for _, e := range allExports64 {
 		h := ""
 		if e.NoName {
 			h = fmt.Sprintf(HeaderExportNoNameTemplate, e.Ordinal)
@@ -176,19 +168,22 @@ func main() {
 		if sExportsHeader64 != "" {
 			sExportsHeader64 += ", "
 		}
-		sExportsHeader64 += fmt.Sprintf("%s", h)
+		sExportsHeader64 += h
 	}
 
-	sExportsHeaderCommon = SplitDefine(sExportsHeaderCommon, 80)
 	sExportsHeader32 = SplitDefine(sExportsHeader32, 80)
 	sExportsHeader64 = SplitDefine(sExportsHeader64, 80)
 
-	err = os.WriteFile(fmt.Sprintf("generated_%s/header.h", dllBaseName), []byte(fmt.Sprintf(HeaderTemplate, dllBaseName, sExportsHeaderCommon, sExportsHeader32, sExportsHeader64)), 777)
+	err = os.WriteFile(fmt.Sprintf("generated_%s/header.h", dllBaseName),
+		[]byte(fmt.Sprintf(HeaderTemplate, dllBaseName, sExportsHeader32, sExportsHeader64)), 777)
 	if err != nil {
 		log.Fatalf("could not write generated header file: %v", err)
 	}
 
 	err = os.WriteFile(fmt.Sprintf("generated_%s/target_name.txt", dllBaseName), []byte(dllBaseName), 777)
+	if err != nil {
+		log.Fatalf("could not write target name file: %v", err)
+	}
 }
 
 func parseExports(peFile string, sl *[]LimitedExport) error {
@@ -290,7 +285,7 @@ func SplitDefine(str string, maxLen int) string {
 		lineLength++
 
 		if lineLength == maxLen && !inQuotes {
-			if str[i+1] == ',' {
+			if i+1 < len(str) && str[i+1] == ',' {
 				lineLength--
 				continue
 			}
@@ -298,6 +293,5 @@ func SplitDefine(str string, maxLen int) string {
 			lineLength = 0
 		}
 	}
-
 	return builder.String()
 }

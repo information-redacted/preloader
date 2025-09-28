@@ -89,21 +89,20 @@ endif
 end`
 
 	HeaderTemplate = `#pragma once
+
 #define PROXYGEN_GENERATED
 
 #define DLL_FNAME "\\%s.dll"
 
-#define COMMON_EXPORT_NAMES \
-    %s
-
 #ifdef _X86_
-#define X86_EXPORT_NAMES \
-    %s
+#define EXPORT_NAMES \
+%s
 #endif
 
-#define X64_EXPORT_NAMES \
-    %s
-`
+#ifdef _X64_
+#define EXPORT_NAMES \
+%s
+#endif`
 
 	HeaderExportNoNameTemplate = `MAKEINTRESOURCEA(%d)`
 
